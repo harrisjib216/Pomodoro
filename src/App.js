@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, TouchableHighlight} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, SafeAreaView, TouchableHighlight } from 'react-native';
 
 const TIMERS = {
   work: {
@@ -81,33 +81,12 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        flexDirection: 'column',
-        backgroundColor: state.color,
-      }}>
+    <SafeAreaView style={[styles.container, { backgroundColor: state.color }]}>
       {/* current session */}
-      <View
-        style={{
-          height: 300,
-          width: '80%',
-          marginTop: 50,
-          borderRadius: 15,
-          position: 'relative',
-          alignItems: 'center',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          backgroundColor: state.boxColor,
-        }}>
+      <View style={[styles.timerBackground, { backgroundColor: state.boxColor }]}>
+
         {/* sessions */}
-        <View
-          style={{
-            top: 0,
-            position: 'absolute',
-            flexDirection: 'row',
-          }}>
+        <View style={styles.timmerWrappers}>
           {Object.keys(TIMERS).map(key => {
             return (
               <TouchableHighlight
@@ -115,12 +94,7 @@ export default function App() {
                 onPress={() => toggleTimer(key)}
                 underlayColor={TIMERS[key].boxColor}
                 style={[
-                  {
-                    flex: 1,
-                    height: 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  },
+                  styles.timerBox,
                   state.session === key && {
                     opacity: 0.87,
                     backgroundColor: state.color,
@@ -128,11 +102,7 @@ export default function App() {
                   key === 'work' && {borderTopLeftRadius: 15},
                   key === 'long break' && {borderTopRightRadius: 15},
                 ]}>
-                <Text
-                  style={{
-                    color: 'white',
-                    textAlign: 'center',
-                  }}>
+                <Text style={styles.timerBoxText}>
                   {key}
                 </Text>
               </TouchableHighlight>
@@ -141,11 +111,7 @@ export default function App() {
         </View>
 
         {/* current time */}
-        <Text
-          style={{
-            fontSize: 32,
-            color: 'white',
-          }}>
+        <Text style={styles.currentTime}>
           {parseInt(state.currentTime / 60)}:
           {state.currentTime % 60 === 0 ? '00' : state.currentTime % 60}
         </Text>
@@ -155,23 +121,62 @@ export default function App() {
       <TouchableHighlight
         onPress={() => toggleTimer()}
         underlayColor={state.color}
-        style={{
-          height: 50,
-          width: '80%',
-          marginTop: 15,
-          borderRadius: 15,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: state.boxColor,
-        }}>
-        <Text
-          style={{
-            fontSize: 16,
-            color: 'white',
-          }}>
+        style={[styles.toggleTimerBtn, { backgroundColor: state.boxColor }]}>
+        <Text style={styles.toggleText}>
           {state.isRunning ? 'Stop' : 'Start'}
         </Text>
       </TouchableHighlight>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  timerBackground: {
+    height: 300,
+    width: '80%',
+    marginTop: 50,
+    borderRadius: 15,
+    position: 'relative',
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  timmerWrappers: {
+    top: 0,
+    position: 'absolute',
+    flexDirection: 'row',
+  },
+  timerBox: {
+    flex: 1,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  timerBoxText: {
+    color: 'white',
+    textAlign: 'center',
+  },
+
+  currentTime: {
+    fontSize: 32,
+    color: 'white',
+  },
+  
+  toggleTimerBtn: {
+    height: 50,
+    width: '80%',
+    marginTop: 15,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  toggleText: {
+    fontSize: 16,
+    color: 'white',
+  },
+});
